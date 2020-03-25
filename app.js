@@ -1,4 +1,9 @@
-var counter = require('./count');
+let fs = require('fs');
 
+fs.unlink('./stuff/writeme.txt', (err) => {
+	console.log('removed');
+});
 
-console.log(counter(["Nemo", "Seneca", "Pomp"]))
+fs.rmdir('stuff', (err) => {
+	console.log('Deleted');
+});
