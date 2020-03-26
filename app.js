@@ -1,9 +1,16 @@
+let http = require('http');
 let fs = require('fs');
 
-fs.unlink('./stuff/writeme.txt', (err) => {
-	console.log('removed');
+let server = http.createServer((req, res) => {
+	console.log('request was made: ' + req.url);
+	res.writeHead(200, { 'Content-Type': 'application/json' });
+	let myObj = {
+		name: 'ryu',
+		job: 'ninja',
+		age: 21
+	};
+	res.end(JSON.stringify(myObj));
 });
 
-fs.rmdir('stuff', (err) => {
-	console.log('Deleted');
-});
+server.listen(3000, '127.0.0.1');
+console.log('Listening to port 3000');
