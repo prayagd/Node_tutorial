@@ -1,32 +1,19 @@
-let http = require('http');
-let fs = require('fs');
+let express = require('express');
+let app = express();
 
-let server = http.createServer((req, res) => {
-	console.log('request was made: ' + req.url);
-	if (req.url === '/home' || req.url === '/') {
-		res.writeHead(200, { 'Content-Type': 'text/html' });
-		fs.createReadStream(__dirname + '/index.html').pipe(res);
-	} else if (req.url === '/contact') {
-		res.writeHead(200, { 'Content-Type': 'text/html' });
-		fs.createReadStream(__dirname + '/contact.html').pipe(res);
-	} else if (req.url === '/api/ninjas') {
-		let myObj = [
-			{
-				name: 'ryu',
-				age: 21
-			},
-			{
-				name: 'moshi',
-				age: 22
-			}
-		];
-		res.writeHead(200, { 'Content-Type': 'application/json' });
-		res.end(JSON.stringify(myObj));
-	} else {
-		res.writeHead(200, { 'Content-Type': 'text/html' });
-		fs.createReadStream(__dirname + '/404.html').pipe(res);
-	}
+app.set('view engine', 'ejs');
+
+app.get('/', (req, res) => {
+	res.render('index');
 });
 
-server.listen(3000, '127.0.0.1');
-console.log('Listening to port 3000');
+app.get('/contact', (req, res) => {
+	res.render('contact');
+});
+
+app.get('/profile/:name', (req, res) => {
+	let data = { age: 22, job: 'ninja', hobbies: [ 'eating', 'fighting', 'fishing' ] };
+	res.render('profile', { person: req.params.name, data: data });
+});
+
+app.listen(3000);
