@@ -2,13 +2,14 @@ let express = require('express');
 let app = express();
 
 app.set('view engine', 'ejs');
+app.use('/assets', express.static('stuff'));
 
 app.get('/', (req, res) => {
 	res.render('index');
 });
 
 app.get('/contact', (req, res) => {
-	res.render('contact');
+	res.render('contact', { qs: req.query });
 });
 
 app.get('/profile/:name', (req, res) => {
